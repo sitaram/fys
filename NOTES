@@ -65,3 +65,4 @@ https://tailwindcss.com/docs/guides/nextjs
   npx tailwindcss init -p
   # add paths to tailwind config
   # add styles to global.css
+npm i openai

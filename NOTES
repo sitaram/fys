@@ -61,4 +61,7 @@ https://tailwindcss.com/docs/guides/nextjs
   gh repo create fys --public
   git remote add origin https://github.com/sitaram/fys.git
   git push --set-upstream origin main
-
+  npm install -D tailwindcss postcss autoprefixer
+  npx tailwindcss init -p
+  # add paths to tailwind config
+  # add styles to global.css

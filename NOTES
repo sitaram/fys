@@ -1,0 +1,64 @@
+openapi key: https://platform.openai.com/docs/quickstart/build-your-application
+
+sudo dnf install nodejs npm gh
+sudo npm i -g vercel
+https://vercel.com/sitaram1
+
+git clone https://github.com/openai/openai-quickstart-node.git
+
+# OR: twitterbio:
+# https://vercel.com/blog/gpt-3-app-next-js-vercel-edge-functions
+# git clone https://github.com/Nutlope/twitterbio
+
+# git:
+# https://education.github.com/git-cheat-sheet-education.pdf
+
+
+RUN LOCALLY:
+npm install
+npm run dev
+
+
+DEPLOY FROM LOCAL DIR:
+vercel link
+vercel deploy
+
+
+DEPLOY FROM GITHUB:
+gh repo create fys --public
+git remote add origin https://github.com/sitaram/fys.git
+gh browse
+git add .
+git commit -a -m initial-demo
+git push --set-upstream origin master
+git push
+
+https://vercel.com/new/import?repository-url=https://github.com/sitaram/fys&env=OPENAI_API_KEY&project-name=fys&repo-name=fys
+# https://vercel.com/new # and import, set env, deploy
+https://vercel.com/sitaram1
+
+
+CLEANUP:
+gh repo ls
+gh auth refresh -h github.com -s delete_repo
+gh repo delete
+
+vercel project ls
+vercel project rm fysproject
+
+
+
+---
+abortive attempt at react:
+  https://dev.to/ethand91/creating-a-react-app-with-typescript-tailwind-support-18b8
+  npm i openai
+
+--
+back to next:
+https://tailwindcss.com/docs/guides/nextjs
+  npx create-next-app@latest fys --javascript --eslint
+  cd fys
+  gh repo create fys --public
+  git remote add origin https://github.com/sitaram/fys.git
+  git push --set-upstream origin main
+

@@ -1,4 +1,4 @@
-import Carousel from "./carousel";
+// import GenderSelector from "./gender";
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
@@ -10,16 +10,6 @@ import { useState, useEffect } from 'react';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Home() {
-  return (
-    <div>
-      <Carousel queries={["fun"]}>
-      </Carousel>
-    </div>
-  );
-}
-
-// export default
-function Old2Home() {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {

@@ -39,7 +39,7 @@ export default async function (req, res) {
 }
 
 function generatePrompt(args) {
-  return `Comma-separated list of popular activities for shoes`;
+  return `Bulleted list of 15 popular and diverse categories of shoes, with an example shoe for each one:`;
   // const gender = args.gender;
   // return `List 10 popular shoe models for ${gender}.  For this list, provide a one-line description. ` +
   // `Also list some types of shoes for ${gender}, and list some goals one might have when buying ${gender} shoes.`;

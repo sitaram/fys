@@ -1,13 +1,22 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image'
 import axios from 'axios';
-import AliceCarousel from 'react-alice-carousel';
-import 'react-alice-carousel/lib/alice-carousel.css';
 import { Grid, Card, CardMedia, CardContent, Typography } from '@material-ui/core';
 import { PhotoLibrary } from '@material-ui/icons';
+import styles from '@/styles/Home.module.css'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
 
-const API_KEY = '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8';
+// example usage:
+// export default function Home() {
+//   return (<Carousel queries={["dog", "cat", "bird", "boa", "elephant", "hippo"]} />);
+// }
 
-const Carousel = ({ queries }) => {
+const UNSPLASH_API_KEY = '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8';
+
+SwiperCore.use([Navigation, Pagination]);
+
+const Carousel = ({ queries, labels }) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
@@ -15,83 +24,54 @@ const Carousel = ({ queries }) => {
       const promises = queries.map(async (query) => {
         const response = await axios.get(`https://api.unsplash.com/search/photos?query=${query}&per_page=3`, {
           headers: {
-            Authorization: `Client-ID ${API_KEY}`,
+            Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
           },
         });
         return response.data.results;
       });
 
       const imagesByQuery = await Promise.all(promises);
-
-      const allImages = imagesByQuery.reduce((acc, images) => [...acc, ...images], []);
-      setImages(allImages);
+      setImages(imagesByQuery);
     };
 
     fetchData();
   }, [queries]);
 
   return (
-    <AliceCarousel>
-      {images.map((image) => (
-        <Grid key={image.id} container justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ position: 'relative' }}>
-              <CardMedia
-                component="img"
-                height="200"
-                image={image.urls.small}
-                alt={image.alt_description}
-              />
-              <CardContent sx={{ position: 'absolute', bottom: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
-                <Typography variant="h6" color="textPrimary">
-                  {image.alt_description || image.description || 'Untitled'}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  by {image.user.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ position: 'relative', marginLeft: '-50px' }}>
-              <CardMedia
-                component="img"
-                height="200"
-                image={image.urls.small}
-                alt={image.alt_description}
-              />
-              <CardContent sx={{ position: 'absolute', bottom: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
-                <Typography variant="h6" color="textPrimary">
-                  {image.alt_description || image.description || 'Untitled'}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  by {image.user.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ position: 'relative', marginLeft: '-100px' }}>
-              <CardMedia
-                component="img"
-                height="200"
-                image={image.urls.small}
-                alt={image.alt_description}
-              />
-              <CardContent sx={{ position: 'absolute', bottom: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
-                <Typography variant="h6" color="textPrimary">
-              {image.alt_description || image.description || 'Untitled'}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              by {image.user.name}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
-  ))}
-</AliceCarousel>
-);
+      <Swiper
+	slidesPerGroup={1}
+        navigation
+	grabCursor={true}
+        pagination={{ clickable: true }}
+	breakpoints={{
+	  768: { // desktop
+	    slidesPerView: 5,
+	    spaceBetween: 30,
+	  },
+	  0: {  // mobile
+	    slidesPerView: 1.3,
+	    spaceBetween: 20,
+	  },
+	}}
+      >
+        {images.map((imageList, index) => (
+          <SwiperSlide key={imageList[0].id}>
+	    {imageList.map((image) => (
+	      <Image
+		key={image.id}
+		src={image.urls.regular}
+		alt={image.alt_description || ""}
+		width={image.width}
+		height={image.height}
+	      />
+	    ))}
+	    <div className="label"><div className="innerlabel">
+	      {(labels && labels[index]) || queries[index]}
+	    </div></div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+  );
 };
 
 export default Carousel;

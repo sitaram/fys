@@ -2,6 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+.swiper {
+  overflow: visible !important;
+}
+
+.swiper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  margin: 20px;
+}
+
+.swiper-pagination {
+  bottom: -30px !important;
+}
+
+.swiper img {
+  border: 10px solid white;
+  outline: 1px solid #aaa;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 55%;
+  height: 48.5%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  transform: rotate(8deg);
+}
+
+.swiper img:nth-child(2) {
+  top: 15%;
+  left: 45%;
+  transform: rotate(-5deg);
+}
+
+.swiper-slide:hover {
+  box-shadow: inset 0px 0px 3px 0px #aaa, 0px 0px 20px 0px #aaa;
+}
+.swiper-slide:active {
+  top: 2px;
+  left: 2px;
+  background: #e5e5e5;
+  box-shadow: inset 0px 0px 3px 0px #c1c1c1, 0px 0px 10px 0px #c1c1c1;
+}
+
+.swiper img:nth-child(3) {
+  top: 45%;
+  left: 20%;
+  transform: rotate(3deg);
+}
+
+.swiper .label {
+  position: absolute;
+  left: 0; right: 0; bottom: 0px;
+  display: flex;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.swiper .innerlabel {
+  background: #444; color: white; font-weight: bold;
+  background: #ff8; color: black; font-weight: bold;
+  text-align: center;
+  position: relative;
+  padding: 1px 10px;
+  text-transform: capitalize;
+}
+
+@media only screen and (max-width: 600px) {
+  .swiper {
+    height: 320px;
+  }
+  .swiper-slide:hover {
+    box-shadow: none;
+  }
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -10,7 +86,7 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 200, 200, 200;
   --background-end-rgb: 255, 255, 255;
 
   --primary-glow: conic-gradient(
@@ -86,17 +162,21 @@
 html,
 body {
   max-width: 100vw;
+  max-height: 100vh;
   overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 5px;
 }
 
-body {
+html {
+  height: 100%;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)) no-repeat;
 }
 
 a {

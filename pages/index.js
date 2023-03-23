@@ -1,60 +1,20 @@
 import Carousel from "./carousel";
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '@/styles/Home.module.css'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
+// import styles from '@/styles/Home.module.css'
 import { getPhotos } from '../lib/unsplash';
 import { useState, useEffect } from 'react';
 
-SwiperCore.use([Navigation, Pagination]);
+function Homes() {
+  // return (<Carousel queries={["hiking", "sailing", "museum", "glass blowing", "biking", "playing board games"]} />);
+  // return (<Carousel queries={["hiking shoes", "sandals", "ballet flats", "sneakers", "oxfords", "clogs"]} />);
+  return (<Carousel queries={["dog", "cat", "bird", "boa", "elephant", "hippo"]} />);
+  // return ( <Carousel queries={["Nike Air Max", "Adidas Ultra Boost", "Reebok CrossFit Nano"]} />);
+  // return ( <Carousel queries={["Nike Air Max", "Adidas Ultra Boost", "Reebok CrossFit Nano"], ["Running", "Walking", "Jogging"]} />);
+}
+
 
 export default function Home() {
-  return (
-    <div>
-      <Carousel queries={["fun"]}>
-      </Carousel>
-    </div>
-  );
-}
-
-// export default
-function Old2Home() {
-  const [photos, setPhotos] = useState([]);
-
-  useEffect(() => {
-    async function fetchPhotos() {
-      const photos = await getPhotos('nike air jordan');
-      setPhotos(photos);
-    }
-    fetchPhotos();
-  }, []);
-
-  return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <Swiper
-        spaceBetween={10}
-        slidesPerView={3}
-        navigation
-        pagination={{ clickable: true }}
-      >
-        {photos.map(photo => (
-          <SwiperSlide key={photo.id}>
-            <Image
-              src={photo.urls.regular}
-              alt={photo.alt_description}
-              width={photo.width}
-              height={photo.height}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  );
-}
-
-// export default 
-function OldHome() {
   const [content, setContent] = useState([]);
   const show = (x) => { setContent(content => [...content, x]); };
   const capitalize = (s) => { return s[0].toUpperCase() + s.slice(1); };
@@ -97,12 +57,12 @@ function OldHome() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main>
 	<div className="text-4xl">Let's ...</div>
-	<button className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/70"
-	onClick={activity}>buy shoes!</button>
+	<button className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-10 mt-8 hover:bg-black/70" onClick={activity}>buy shoes!</button>
 	{content}
       </main>
     </>
   )
+  // main className={styles.main}
 }

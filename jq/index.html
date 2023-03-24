@@ -4,33 +4,37 @@
   <title>Find Yourself</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.10/jquery.lazy.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.10/jquery.lazy.plugins.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
   <script src="index.js"></script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
   <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 </head>
 <body class="p-3 bg-neutral-300">
 
-<div class="p-3 mb-2 max-w-sm bg-white
-  rounded-lg flex items-center space-x-4 shadow-md hover:shadow-xl
-  active:shadow-none active:bg-neutral-100 active:mt-1.5 active:ml-0.5">
+<div id="overlay"><div class="cv-spinner"><span class="spinner"></span></div></div>
 
-  <img class="h-24 w-30" src="weekend.png" alt="Weekend" />
+<div id="weekend" class="p-3 max-w-sm bg-white
+  rounded-lg flex items-center space-x-4 shadow-md hover:shadow-xl
+  active:shadow-none active:bg-neutral-100 active:mt-0.5 active:-mb-0.5 active:ml-0.5 active:-mr-0.5 ">
+
+  <img class="h-24 w-30" src="img/weekend.png" alt="Weekend" />
   <div>
     <div class="text-l text-slate-500">What do you want to do..</div>
     <p class="text-xl text-black">this weekend?</p>
   </div>
 </div>
 
-<button id="button" type="button">Click</button>
-
-<div id="overlay">
-  <div class="cv-spinner">
-    <span class="spinner"></span>
-  </div>
+<div id="image-carousel" class="py-3 my-2 max-w-full bg-white rounded-lg shadow-md">
 </div>
 
 </body>

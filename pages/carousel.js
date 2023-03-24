@@ -18,6 +18,8 @@ SwiperCore.use([Navigation, Pagination]);
 
 const Carousel = ({ queries, labels }) => {
   const [images, setImages] = useState([]);
+  console.log('queries = ', queries);
+  console.log('labels = ', labels);
 
   useEffect(() => {
     const fetchData = async () => {

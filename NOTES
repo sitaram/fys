@@ -1,0 +1,20 @@
+https://www.geeksforgeeks.org/how-to-use-jquery-with-node-js/
+
+npx -y create-next-app@latest mer --javascript --eslint 
+npm install jquery
+npm install jsdom
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+# add paths to tailwind config
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    // Or if using `src` directory:
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+# add styles to global.css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+npm i openai unsplash unsplash-js

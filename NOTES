@@ -1,8 +1,7 @@
 https://www.geeksforgeeks.org/how-to-use-jquery-with-node-js/
 
 npx -y create-next-app@latest mer --javascript --eslint 
-npm install jquery
-npm install jsdom
+npm install jquery jsdom jquery-ajax jquery-lazy slick
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 # add paths to tailwind config
@@ -17,4 +16,17 @@ npx tailwindcss init -p
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
-npm i openai unsplash unsplash-js
+
+# npm i openai unsplash unsplash-js
+
+
+add this to next.config.js:
+const nextConfig = {
+  ...
+  webpack: config => {
+    config.resolve.fallback = { ...config.resolve.fallback, net: false, os: false, tls: false, fs: false,
+      child_process: false, perf_hooks: false };
+    return config;
+  },
+  ...
+}

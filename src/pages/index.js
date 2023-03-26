@@ -40,6 +40,7 @@ function unsplash(container, queries) {
     container.append($slick);
 
     // Initialize the slick carousel
+    if(0)
     $slick.on('mousewheel DOMMouseScroll wheel', (function(e) {
       e.preventDefault();
       if (e.originalEvent.deltaY < 0) {
@@ -105,17 +106,15 @@ function vsplit(strings) {
 }
 
 const render = (data) => {
-  $('#rest').append('\
-      <div>Here are some initial ideas:</div>\
-      <div id="image-carousel" className="py-3 my-2 max-w-full bg-white rounded-lg shadow-md"></div>');
-
   const capitalize = (s) => { return s[0].toUpperCase() + s.slice(1); };
 
   const list = vsplit(data.split(/[\n,]/).
     filter(x => x).
     map(x => capitalize(x.replace(/^ *(\d+\.)? */,'').replace(/\.$/,''))));
 
-  unsplash($('#image-carousel'), list[0]);
+  var $box = $('<div class="p-3 my-2 bg-white rounded-lg shadow-md">').text('Here are some initial ideas:');
+  $('#rest').append($box);
+  unsplash($box, list[0]);
 };
 
 const openai = (prompt) => {
@@ -144,11 +143,6 @@ export default function Home() {
   useEffect(() => {
     $(document).ready(() => {
 
-// XXX DISABLED 	$('#rest').append('\
-// XXX DISABLED 	    <div>Here are some initial ideas:</div>\
-// XXX DISABLED 	    <div id="image-carousel" className="py-3 my-2 max-w-full bg-white rounded-lg shadow-md"></div>');
-// XXX DISABLED 	unsplash($('#image-carousel'), ["dog", "cat", "bird"]);
-
 	$('#weekend').off('click').click(function(e) {
 	  openai(`Bulleted list of 15 popular and diverse activities that people do over the weekend.`);
 	});
@@ -164,7 +158,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-3 bg-neutral-300">
+      <main className="p-3">
 
 	<div id="overlay"><div className="cv-spinner"><span className="spinner"></span></div></div>
 

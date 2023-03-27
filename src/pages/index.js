@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import $ from "jquery";
+import $ from 'jquery';
 
 if (typeof window !== 'undefined')
   import('slick-carousel');  // load dynamically if running on the client side

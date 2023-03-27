@@ -1,0 +1,4 @@
+# fly.toml file generated for mer on 2023-03-27T16:22:11-07:00
+
+app = "mer"
+primary_region = "sjc"

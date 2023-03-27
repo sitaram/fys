@@ -1,7 +1,7 @@
 https://www.geeksforgeeks.org/how-to-use-jquery-with-node-js/
 
 npx -y create-next-app@latest mer --javascript --eslint 
-npm install jquery jsdom jquery-ajax jquery-lazy slick
+npm install jquery jsdom jquery-ajax jquery-lazy slick-carousel jquery-ui
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 # add paths to tailwind config

@@ -138,6 +138,7 @@ a {
 .slick-track {
   position: relative;
   height: 250px;
+/* XXX DISABLED   width: 1000000px !important; */
 }
 
 .slick-slide {
@@ -195,4 +196,15 @@ a {
   transform: translate(-50%, -50%);
   left: 50%;
   bottom: -10px;
+}
+
+
+input[type="radio"] + label {
+  background-color: white;
+  color: black;
+}
+
+input[type="radio"]:checked + label {
+  background-color: rgb(59 130 246);
+  color: #fff;
 }

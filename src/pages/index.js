@@ -22,7 +22,7 @@ function unsplash(container, queries) {
   var promises = queries.map(fetchImages);
 
   $.when.apply($, promises).then(function() {
-    var slick = $('<div class="flex flex-wrap justify-center">').addClass('slick');
+    var slick = $('<div class="slick flex flex-wrap justify-center">');
 
     // Loop through the results for each query and create an image element for each one
     for (var i = 0; i < arguments.length; i++) {
@@ -42,32 +42,33 @@ function unsplash(container, queries) {
     // Append the slick container to the carousel
     container.append(slick);
 
-// XXX DISABLED     if(0)
-    slick.slick({
-      lazyLoad: 'ondemand',
-      slidesToShow: 4,
-      slidesToScroll: 2,
-      infinite: false,
-      arrows: true,
-      prevArrow:"<img class='ml-4 z-40 slick-prev' src='/left.png'>",
-      nextArrow:"<img class='mr-4 z-40 slick-next' src='/right.png'>",
-      responsive: [
-	{
-	  breakpoint: 1000,
-	  settings: {
-	    slidesToShow: 3,
-	    slidesToScroll: 3,
+    if ($(window).width() > 400) {  // carousel on desktop, list on mobile
+      slick.slick({
+	lazyLoad: 'ondemand',
+	slidesToShow: 4,
+	slidesToScroll: 2,
+	infinite: false,
+	arrows: true,
+	prevArrow:"<img class='ml-4 z-40 slick-prev' src='/left.png'>",
+	nextArrow:"<img class='mr-4 z-40 slick-next' src='/right.png'>",
+	responsive: [
+	  {
+	    breakpoint: 1000,
+	    settings: {
+	      slidesToShow: 3,
+	      slidesToScroll: 3,
+	    }
+	  },
+	  {
+	    breakpoint: 768,
+	    settings: {
+	      slidesToShow: 1,
+	      slidesToScroll: 1,
+	    }
 	  }
-	},
-	{
-	  breakpoint: 768,
-	  settings: {
-	    slidesToShow: 1,
-	    slidesToScroll: 1,
-	  }
-	}
-      ]
-    });
+	]
+      });
+    }
   }, function() {
     console.log('Error fetching images from Unsplash API');
   });
@@ -140,7 +141,6 @@ const clearCache = () => {
 
 const openai = (prompt, render) => {
   console.log(prompt);
-
   var cache = localStorage.getItem("openai:" + prompt);
   if (cache) {
     console.log('cached:' + cache);

@@ -132,17 +132,16 @@ a {
 }
 
 .slick {
-  margin: 0 5px;
 }
 
 .slick-track {
-  position: relative;
-  height: 250px;
+  margin-bottom: 15px;
 }
 
-.slick-slide {
+.slick-tile, .slick-slide {
   position: relative;
-  width: 230px !important;
+  width: 250px !important;
+  height: 250px !important;
 }
 
 .slick-img {
@@ -171,15 +170,16 @@ a {
 }
 
 @media only screen and (max-width: 600px) {
-  .slick-slide:hover {
+  .slick-tile:hover {
     box-shadow: none;
   }
 }
 
-.slick-slide:hover {
-  box-shadow: inset 0px 0px 3px 0px #aaa, 0px 0px 20px 0px #aaa;
+.slick-tile:hover {
+  box-shadow: inset 0px 0px 3px 0px #aaa, 0px 0px 10px 0px #aaa;
 }
-.slick-slide:active {
+
+.slick-tile:active {
   top: 2px;
   left: 2px;
   background: #e5e5e5;
@@ -200,17 +200,13 @@ a {
 
 input[type="radio"] + label {
   background-color: white;
-  color: black;
-  text-decoration: none;
+  color: #808080;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
 }
 
 input[type="radio"]:checked + label {
-/* background-color: rgb(59 130 246); */
-/* color: #fff; */
-  color: rgb(59 130 246);
-/* XXX DISABLED   font-weight: bold; */
-  text-decoration: underline;
-/* XXX DISABLED   text-decoration-style: dotted; */
-  text-underline-offset: .2em;
-
+  text-decoration: none;
+  color: black;
 }

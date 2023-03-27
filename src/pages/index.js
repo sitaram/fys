@@ -1,12 +1,10 @@
+import Head from 'next/head'
+import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import $ from 'jquery';
-
 if (typeof window !== 'undefined')
   import('slick-carousel');  // load dynamically if running on the client side
 
-import { useEffect } from 'react';
-import Head from 'next/head'
-import { JSDOM } from 'jsdom';
 const UNSPLASH_API_KEY = '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8'; // TODO: move to server
 
 var initialized = false;
@@ -24,12 +22,12 @@ function unsplash(container, queries) {
   var promises = queries.map(fetchImages);
 
   $.when.apply($, promises).then(function() {
-    var slick = $('<div>').addClass('slick');
+    var slick = $('<div class="flex flex-wrap justify-center">').addClass('slick');
 
     // Loop through the results for each query and create an image element for each one
     for (var i = 0; i < arguments.length; i++) {
       var data = arguments[i][0];
-      var tile = $('<div>');
+      var tile = $('<div class="slick-tile my-2">');
       $.each(data.results, function(j, result) {
 	var $img = $('<img>').addClass('slick-img').attr({
 	  'src': result.urls.thumb,
@@ -44,6 +42,7 @@ function unsplash(container, queries) {
     // Append the slick container to the carousel
     container.append(slick);
 
+// XXX DISABLED     if(0)
     slick.slick({
       lazyLoad: 'ondemand',
       slidesToShow: 4,
@@ -52,7 +51,6 @@ function unsplash(container, queries) {
       arrows: true,
       prevArrow:"<img class='ml-4 z-40 slick-prev' src='/left.png'>",
       nextArrow:"<img class='mr-4 z-40 slick-next' src='/right.png'>",
-      // dots: true,
       responsive: [
 	{
 	  breakpoint: 1000,
@@ -62,14 +60,7 @@ function unsplash(container, queries) {
 	  }
 	},
 	{
-	  breakpoint: 700,
-	  settings: {
-	    slidesToShow: 1,
-	    slidesToScroll: 2,
-	  }
-	},
-	{
-	  breakpoint: 500,
+	  breakpoint: 768,
 	  settings: {
 	    slidesToShow: 1,
 	    slidesToScroll: 1,
@@ -77,7 +68,6 @@ function unsplash(container, queries) {
 	}
       ]
     });
-
   }, function() {
     console.log('Error fetching images from Unsplash API');
   });
@@ -106,30 +96,33 @@ const render = (data) => {
     filter(x => x).
     map(x => capitalize(x.replace(/^ *(\d+\.)? */,'').replace(/\.$/,''))));
 
-  var $box = $('<div class="p-3 my-2 bg-white rounded-lg shadow-md">').text('Here are some initial ideas:');
+  var $box = $('<div class="p-2 flex items-center">');
   var $carousel = $('<div>');
   $box.append($carousel);
 
-  $box.append(`
-      Select one above to:
+  var $box2 = $('<div class="p-3 bg-white rounded-lg shadow-md">');
+  $box2.append(`
+      Select one above to
       <div class="radio-buttons inline-flex py-2">
 	<input type="radio" id="option1" name="radio" value="Option 1" class="form-radio sr-only" />
-	<label for="option1" class="radio-label-text px-1 cursor-pointer rounded-sm">Look deeper</label> |
-
+	<label for="option1" class="radio-label-text px-1 cursor-pointer rounded-sm">look deeper</label> |
 	<input type="radio" id="option2" name="radio" value="Option 2" class="form-radio sr-only" />
-	<label for="option2" class="radio-label-text px-1 cursor-pointer rounded-sm">See similar</label>
+	<label for="option2" class="radio-label-text px-1 cursor-pointer rounded-sm">see similar</label>
       </div>
 
       <br>Or add preferences:
-      <input type="text" size=30 placeholder="E.g., with kids, hiking, near palo alto" class="border-2 my-2 border-gray-200 rounded-sm py-1 px-2 focus:outline-none focus:border-blue-300 focus:shadow-md">
+      <input type="text" size=20 placeholder="E.g., with kids, hiking, near palo alto" class="border-2 my-2 border-gray-200 rounded-sm py-1 px-2 focus:outline-none focus:border-blue-300 focus:shadow-md">
       <br>E.g.,
-      <input type="button" class="px-2 border-0 border-gray-100 focus:bg-blue-500 focus:text-white" value="near ` + location + `" />
-      <input type="button" class="px-2 border-0 border-gray-100 focus:bg-blue-500 focus:text-white" value="with kids" />
-      <input type="button" class="px-2 border-0 border-gray-100 focus:bg-blue-500 focus:text-white" value="active" />
-      <input type="button" class="px-2 border-0 border-gray-100 focus:bg-blue-500 focus:text-white" value="indoor" />
   `);
 
-  $('#rest').append($box);
+  var suggestions = ['with kids', 'active', 'indoor'];
+  if (location) suggestions.unshift('near ' + location);
+  suggestions.forEach(s => {
+    $box2.append(`<input type="button" class="px-1 border-0 border-gray-100 \
+      underline decoration-dotted underline-offset-4 active:decoration-solid" value="` + s + `" />`);
+  });
+
+  $('#rest').append($box).append($box2);
 
   $('.radio-buttons').each(function() { $(this).children().first().attr('checked', true); }); // XXX clears all but latest
   $('input[type="radio"]').click(function(e) {  // XXX scrolls to top
@@ -139,7 +132,22 @@ const render = (data) => {
   unsplash($carousel, list[0]);
 };
 
-const openai = (prompt) => {
+const clearCache = () => {
+  for (i in localStorage)
+    if (i.match(/^openai:/))
+      localStorage.removeItem(i);
+}
+
+const openai = (prompt, render) => {
+  console.log(prompt);
+
+  var cache = localStorage.getItem("openai:" + prompt);
+  if (cache) {
+    console.log('cached:' + cache);
+    render(cache);
+    return;
+  }
+
   $("#overlay").fadeIn(300);
   const data = $.ajax({
     type: 'GET',
@@ -149,6 +157,7 @@ const openai = (prompt) => {
       $("#overlay").fadeOut(300);
       const out = data.choices[0].text;
       console.log(out);
+      localStorage.setItem("openai:" + prompt, out);
       render(out);
     },
     error: function(xhr, textStatus, errorThrown) {
@@ -181,8 +190,20 @@ export default function Home() {
 	if (navigator.geolocation)
 	  navigator.geolocation.getCurrentPosition(showPosition);
 
-	$('#weekend').off('click').click(function(e) {
-	  openai(`Bulleted list of 15 popular and diverse activities that people do over the weekend, ` + preferences + `.`);
+  $('#drawer-toggle').click(function(e) {
+    e.preventDefault();
+    var drawer = $('#drawer');
+    if (drawer.outerHeight() === 0) {
+      drawer.css('height', 'auto');
+      var height = drawer.outerHeight();
+      drawer.css('height', '0').animate({height: height}, 100);
+    } else {
+      drawer.animate({height: 0}, 100);
+    }
+  });
+
+	$('#weekend').click(function(e) {
+	  openai(`Bulleted list of 15 popular and diverse activities that people do over the weekend, ` + preferences + `.`, render);
 	});
 
     });
@@ -214,6 +235,21 @@ export default function Home() {
 	</div>
 
 	<div id="rest"></div>
+
+	<a href="#" id="drawer-toggle" className="fixed bottom-0 left-0 w-full py-4 bg-blue-500 text-white text-center">Open Drawer</a>
+
+	<div id="drawer" className="fixed bottom-0 left-0 w-full h-0 bg-gray-200 overflow-hidden transition-all duration-200 ease-in-out">
+
+      Select one above to
+      <div className="radio-buttons inline-flex py-2">
+	<input type="radio" id="option1" name="radio" value="Option 1" className="form-radio sr-only" />
+	<label htmlFor="option1" className="radio-label-text px-1 cursor-pointer rounded-sm">look deeper</label> |
+	<input type="radio" id="option2" name="radio" value="Option 2" className="form-radio sr-only" />
+	<label htmlFor="option2" className="radio-label-text px-1 cursor-pointer rounded-sm">see similar</label>
+      </div>
+
+	</div>
+
       </main>
     </>
   );

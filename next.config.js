@@ -6,8 +6,6 @@ const nextConfig = {
       child_process: false, perf_hooks: false };
     return config;
   },
-
-  serverTimeout: 30000  // 30 seconds
 }
 
 module.exports = nextConfig

@@ -128,12 +128,10 @@ const render = (data) => {
 
       <br>Or add preferences:
       <input type="text" size=30 placeholder="E.g., with kids, hiking, near palo alto" class="border-2 my-2 border-gray-200 rounded-sm py-1 px-2 focus:outline-none focus:border-blue-300 focus:shadow-md">
-      <div>
       E.g.,
       <input type="button" class="px-2 border-2 border-gray-100 active:bg-blue-500 active:text-white" value="with kids" />
       <input type="button" class="px-2 border-2 border-gray-100 active:bg-blue-500 active:text-white" value="active" />
       <input type="button" class="px-2 border-2 border-gray-100 active:bg-blue-500 active:text-white" value="indoor" />
-      </div>
   `);
 
   $('#rest').append($box);

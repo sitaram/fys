@@ -138,7 +138,6 @@ a {
 .slick-track {
   position: relative;
   height: 250px;
-/* XXX DISABLED   width: 1000000px !important; */
 }
 
 .slick-slide {

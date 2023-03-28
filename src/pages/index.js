@@ -14,6 +14,7 @@ if (typeof window !== 'undefined')
 var initialized = false;
 var location = '';
 var preferences = '';
+const mobileWidth = 1200;
 
 function unsplash(container, queries) {
   function fetchImages(query) {
@@ -45,7 +46,7 @@ function unsplash(container, queries) {
     // Append the slick container to the carousel
     container.append(slick);
 
-    if ($(window).width() > 400) {  // carousel on desktop, list on mobile
+    if ($(window).width() > mobileWidth) {  // carousel on desktop, list on mobile
       slick.slick({
 	lazyLoad: 'ondemand',
 	slidesToShow: 4,
@@ -128,7 +129,7 @@ const render = (data) => {
       underline decoration-dotted underline-offset-4 active:decoration-solid" value="` + s + `" />`);
   });
 
-  if ($(window).width() > 400) {
+  if ($(window).width() > mobileWidth) {
     $('#rest').append($box2);
 // XXX DISABLED     var toolbar = $('#toolbar');
 // XXX DISABLED     toolbar.empty().append($box2);

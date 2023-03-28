@@ -14,7 +14,6 @@ if (typeof window !== 'undefined')
 var initialized = false;
 var location = '';
 var preferences = '';
-const mobileWidth = 1200;
 
 function unsplash(container, queries) {
   function fetchImages(query) {
@@ -46,7 +45,7 @@ function unsplash(container, queries) {
     // Append the slick container to the carousel
     container.append(slick);
 
-    if ($(window).width() > mobileWidth) {  // carousel on desktop, list on mobile
+    if ($(window).width() > $(window).height()) {  // landscape, not portrait
       slick.slick({
 	lazyLoad: 'ondemand',
 	slidesToShow: 4,
@@ -74,7 +73,9 @@ function unsplash(container, queries) {
       });
     }
   }, function() {
-    console.log('Error fetching images from Unsplash API');
+    $.each(arguments, function(index, error) {
+      console.log("Error fetching images from Unsplash API: " + (index + 1) + " failed with error: " + error.statusText);
+    });
   });
 
 };
@@ -129,7 +130,7 @@ const render = (data) => {
       underline decoration-dotted underline-offset-4 active:decoration-solid" value="` + s + `" />`);
   });
 
-  if ($(window).width() > mobileWidth) {
+  if ($(window).width() > $(window).height()) {  // landscape, not portrait
     $('#rest').append($box2);
 // XXX DISABLED     var toolbar = $('#toolbar');
 // XXX DISABLED     toolbar.empty().append($box2);
@@ -200,7 +201,7 @@ const openai = (prompt, render) => {
     },
     error: function(xhr, textStatus, errorThrown) {
       $("#overlay").fadeOut(300);
-      console.log('Error fetching openAI completions');
+      console.log('Error fetching openAI completions: ' + textStatus + ': ' + errorThrown);
     }
   }).then(function(data) {
     return data;

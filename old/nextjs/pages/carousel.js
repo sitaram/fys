@@ -12,7 +12,7 @@ import SwiperCore, { Navigation, Pagination } from 'swiper';
 //   return (<Carousel queries={["dog", "cat", "bird", "boa", "elephant", "hippo"]} />);
 // }
 
-const UNSPLASH_API_KEY = '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8';
+const UNSPLASH_API_KEY = 'XXX';
 
 SwiperCore.use([Navigation, Pagination]);
 

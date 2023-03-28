@@ -1,5 +1,9 @@
 // density of interesting is super high
 //
+// pick topics worthy of discussion - more challenging, curiosity, ...
+//
+// decision problem picker: https://sharegpt.com/c/sa0Dj2K
+
 import Head from 'next/head'
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';

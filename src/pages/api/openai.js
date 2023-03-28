@@ -34,7 +34,7 @@ export default async (req, res) => {
     console.log(responseData);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error fetching data from OpenAI API' });
+    res.status(500).json({ message: 'Error fetching data from OpenAI API' + error });
   }
 };
 

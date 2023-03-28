@@ -5,17 +5,14 @@ import $ from 'jquery';
 if (typeof window !== 'undefined')
   import('slick-carousel');  // load dynamically if running on the client side
 
-const UNSPLASH_API_KEY = 'XXX'; // TODO: move to server
-
 var initialized = false;
 var location = '';
 var preferences = '';
 
 function unsplash(container, queries) {
   function fetchImages(query) {
-    var url = 'https://api.unsplash.com/search/photos?query=' + query + '&per_page=3&client_id=' + UNSPLASH_API_KEY;
     return $.ajax({
-      url: url
+      url: '/api/unsplash?q=' + query
     });
   }
   // Fetch images for each query in parallel

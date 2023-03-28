@@ -1,5 +1,5 @@
-const OPEN_API_KEY = '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';
-const UNSPLASH_API_KEY = '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8';
+const OPEN_API_KEY = 'XXX';
+const UNSPLASH_API_KEY = 'XXX';
 
 function openai(prompt) {
   var endpoint = 'https://api.openai.com/v1/completions';

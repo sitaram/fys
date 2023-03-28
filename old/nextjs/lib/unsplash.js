@@ -1,8 +1,8 @@
 // import Unsplash from 'unsplash-js';
 import { createApi } from 'unsplash-js';
 
-const unsplash = new createApi({ accessKey: '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8' });
-// const unsplash = new Unsplash({ accessKey: '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8' });
+const unsplash = new createApi({ accessKey: 'XXX' });
+// const unsplash = new Unsplash({ accessKey: 'XXX' });
 
 export async function getPhotos(q) {
   try {

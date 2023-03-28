@@ -5,7 +5,7 @@ import $ from 'jquery';
 if (typeof window !== 'undefined')
   import('slick-carousel');  // load dynamically if running on the client side
 
-const UNSPLASH_API_KEY = '_HifaNwNoljS_lFLkUQ7L4nQulMXn6FcCazEVNlhTB8'; // TODO: move to server
+const UNSPLASH_API_KEY = 'XXX'; // TODO: move to server
 
 var initialized = false;
 var location = '';
@@ -22,21 +22,21 @@ function unsplash(container, queries) {
   var promises = queries.map(fetchImages);
 
   $.when.apply($, promises).then(function() {
-    var slick = $('<div class="slick flex flex-wrap justify-center">');
+    var slick = $('<div class="slick relative flex flex-wrap justify-center">');
 
     // Loop through the results for each query and create an image element for each one
     for (var i = 0; i < arguments.length; i++) {
+      var outerTile = $('<div>').appendTo(slick);
+      var tile = $('<div class="slick-tile mb-2">').appendTo(outerTile);
       var data = arguments[i][0];
-      var tile = $('<div class="slick-tile my-2">');
+      var imgs = $('<div class="slick-imgs mb-4 flex relative justify-center">').appendTo(tile);
       $.each(data.results, function(j, result) {
-	var $img = $('<img>').addClass('slick-img').attr({
+	$('<img>').addClass('slick-img').attr({
 	  'src': result.urls.thumb,
 	  'data-lazy': result.urls.regular
-	});
-	tile.append($img);
+	}).appendTo(imgs);
       });
-      tile.append($('<div>').addClass('bg-white shadow-md py-1 px-2 capitalize absolute slick-label').text(queries[i]));
-      slick.append(tile);
+      $('<div class="slick-label bg-white relative shadow-md py-1 px-2 text-center">').text(queries[i]).appendTo(tile);
     }
 
     // Append the slick container to the carousel
@@ -95,16 +95,17 @@ const render = (data) => {
 
   const list = vsplit(data.split(/[\n,]/).
     filter(x => x).
-    map(x => capitalize(x.replace(/^ *(\d+\.)? */,'').replace(/\.$/,''))));
+    map(x => capitalize(x.replace(/^ *(\d+\.|•)? */,'').replace(/\.$/,''))));
 
   var $box = $('<div class="p-2 flex items-center">');
   var $carousel = $('<div>');
   $box.append($carousel);
+  $('#rest').empty().append($box);
 
-  var $box2 = $('<div class="p-3 bg-white rounded-lg shadow-md">');
+  var $box2 = $('<div class="drawer-inner p-4 bg-white rounded-lg shadow-md">');
   $box2.append(`
       Select one above to
-      <div class="radio-buttons inline-flex py-2">
+      <div class="radio-buttons inline-flex">
 	<input type="radio" id="option1" name="radio" value="Option 1" class="form-radio sr-only" />
 	<label for="option1" class="radio-label-text px-1 cursor-pointer rounded-sm">look deeper</label> |
 	<input type="radio" id="option2" name="radio" value="Option 2" class="form-radio sr-only" />
@@ -112,23 +113,53 @@ const render = (data) => {
       </div>
 
       <br>Or add preferences:
-      <input type="text" size=20 placeholder="E.g., with kids, hiking, near palo alto" class="border-2 my-2 border-gray-200 rounded-sm py-1 px-2 focus:outline-none focus:border-blue-300 focus:shadow-md">
+      <input type="text" size=10 placeholder="E.g., with kids, hiking" value="` + preferences + `"
+	class="prefs border-2 ml-1 my-2 border-gray-200 rounded-sm py-1 px-2 focus:outline-none focus:border-blue-300 focus:shadow-md">
       <br>E.g.,
   `);
 
   var suggestions = ['with kids', 'active', 'indoor'];
-  if (location) suggestions.unshift('near ' + location);
   suggestions.forEach(s => {
-    $box2.append(`<input type="button" class="px-1 border-0 border-gray-100 \
+    $box2.append(`<input type="button" class="pref-sugg px-1 border-0 border-gray-100 \
       underline decoration-dotted underline-offset-4 active:decoration-solid" value="` + s + `" />`);
   });
 
-  $('#rest').append($box).append($box2);
+  if ($(window).width() > 400) {
+    $('#rest').append($box2);
+  } else {
+    var drawer = $('#drawer');
+    drawer.empty().append($box2);
+    var height = $box2.outerHeight();
+    drawer.css('height', '0').animate({height: height}, 100);
+    // close: drawer.animate({height: 0}, 100);
+  }
 
-  $('.radio-buttons').each(function() { $(this).children().first().attr('checked', true); }); // XXX clears all but latest
+  $('.pref-sugg').click(function(e) {
+    var v = $(this).val();
+    var prefs = $('.prefs').val().split(', ');
+    if (prefs.length === 1 && prefs[0] === '') prefs.splice(0, 1);
+    var index = $.inArray(v, prefs);
+    if (index === -1)
+      prefs.push(v);
+    else
+      prefs.splice(index, 1);
+    $('.prefs').val(preferences = prefs.join(', '));
+    reload();
+  });
+
+  $('.radio-buttons').children().first().attr('checked', true); // XXX clears all but latest
   $('input[type="radio"]').click(function(e) {  // XXX scrolls to top
     console.log(this);
   });
+
+  var input = $('.prefs');
+  const inputLeft = input.offset().left;
+  const windowWidth = $(window).width();
+  const padding = parseInt(input.css('padding-left')) + parseInt(input.css('padding-right'));
+  const border = parseInt(input.css('border-left-width')) + parseInt(input.css('border-right-width'));
+  const margin = parseInt(input.css('margin-left')) + parseInt(input.css('margin-right'));
+  const maxWidth = windowWidth - (inputLeft - $(window).scrollLeft()) - padding - border - margin;
+  input.width(Math.min(maxWidth - 20, 800));
 
   unsplash($carousel, list[0]);
 };
@@ -177,9 +208,17 @@ function showPosition(position) {
   $.get(url, function(data) {
     var res = data.results[0].components;
     location = res.city + ', ' + res.state_code || res.state;
-    $("#location").html('&#x25cf; ' + location);
+    $("#location").html(' near ' + location);
+    $("#location-box").show();
   });
 }
+
+const reload = function() {
+  var loc = $('#location-checkbox').prop('checked') ? 'near ' + location : '';
+  openai(`Bulleted list of 15 popular and diverse activities that people do over the weekend` + loc
+	 + (preferences ? ', with these preferences: ' + preferences : '')
+	 + `.`, render);
+};
 
 export default function Home() {
   useEffect(() => {
@@ -190,21 +229,7 @@ export default function Home() {
 	if (navigator.geolocation)
 	  navigator.geolocation.getCurrentPosition(showPosition);
 
-  $('#drawer-toggle').click(function(e) {
-    e.preventDefault();
-    var drawer = $('#drawer');
-    if (drawer.outerHeight() === 0) {
-      drawer.css('height', 'auto');
-      var height = drawer.outerHeight();
-      drawer.css('height', '0').animate({height: height}, 100);
-    } else {
-      drawer.animate({height: 0}, 100);
-    }
-  });
-
-	$('#weekend').click(function(e) {
-	  openai(`Bulleted list of 15 popular and diverse activities that people do over the weekend, ` + preferences + `.`, render);
-	});
+	$('#weekend').click(reload);
 
     });
   }, []);
@@ -217,13 +242,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-3">
-
-	<div id="location" className="fixed top-5 right-5 text-orange-700 text-sm font-bold"></div>
-
+      <main>
 	<div id="overlay"><div className="cv-spinner"><span className="spinner"></span></div></div>
 
-	<div id="weekend" className="p-3 max-w-sm bg-white
+	<div id="weekend" className="p-3 max-w-md bg-white
 	  rounded-lg flex items-center space-x-4 shadow-md hover:shadow-xl
 	  active:shadow-none active:bg-neutral-100 active:mt-0.5 active:-mb-0.5 active:ml-0.5 active:-mr-0.5 ">
 
@@ -231,25 +253,16 @@ export default function Home() {
 	  <div>
 	    <div className="text-l text-slate-500">What do you want to do..</div>
 	    <p className="text-xl text-black">this weekend?</p>
+
+	    <div id="location-box" className="pt-1" hidden>
+	      <input id="location-checkbox" type="checkbox" className="align-middle" />
+	      <div id="location" className="inline pl-1 text-blue-500 text-sm font-bold"></div>
+	    </div>
 	  </div>
 	</div>
 
 	<div id="rest"></div>
-
-	<a href="#" id="drawer-toggle" className="fixed bottom-0 left-0 w-full py-4 bg-blue-500 text-white text-center">Open Drawer</a>
-
-	<div id="drawer" className="fixed bottom-0 left-0 w-full h-0 bg-gray-200 overflow-hidden transition-all duration-200 ease-in-out">
-
-      Select one above to
-      <div className="radio-buttons inline-flex py-2">
-	<input type="radio" id="option1" name="radio" value="Option 1" className="form-radio sr-only" />
-	<label htmlFor="option1" className="radio-label-text px-1 cursor-pointer rounded-sm">look deeper</label> |
-	<input type="radio" id="option2" name="radio" value="Option 2" className="form-radio sr-only" />
-	<label htmlFor="option2" className="radio-label-text px-1 cursor-pointer rounded-sm">see similar</label>
-      </div>
-
-	</div>
-
+	<div id="drawer" className="fixed bottom-0 left-0 w-full h-0 bg-white overflow-hidden transition-all duration-200 ease-in-out shadow-[0_-10px_10px_0_rgba(0,0,0,0.2)]" />
       </main>
     </>
   );

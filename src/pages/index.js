@@ -1,3 +1,5 @@
+// density of interesting is super high
+//
 import Head from 'next/head'
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
@@ -109,13 +111,14 @@ const render = (data) => {
 	<label for="option2" class="radio-label-text px-1 cursor-pointer rounded-sm">see similar</label>
       </div>
 
-      <br>Or add preferences:
+      <br>What's on your mind?
       <input type="text" size=10 placeholder="E.g., with kids, hiking" value="` + preferences + `"
 	class="prefs border-2 ml-1 my-2 border-gray-200 rounded-sm py-1 px-2 focus:outline-none focus:border-blue-300 focus:shadow-md">
       <br>E.g.,
   `);
 
-  var suggestions = ['with kids', 'active', 'indoor'];
+  var suggestions = ['active', 'indoor', 'with kids', 'civil rights', 'blm', 'rainy day', 'winery', 'art',
+  'meeting people', 'romantic'];
   suggestions.forEach(s => {
     $box2.append(`<input type="button" class="pref-sugg px-1 border-0 border-gray-100 \
       underline decoration-dotted underline-offset-4 active:decoration-solid" value="` + s + `" />`);
@@ -123,6 +126,8 @@ const render = (data) => {
 
   if ($(window).width() > 400) {
     $('#rest').append($box2);
+// XXX DISABLED     var toolbar = $('#toolbar');
+// XXX DISABLED     toolbar.empty().append($box2);
   } else {
     var drawer = $('#drawer');
     drawer.empty().append($box2);
@@ -211,7 +216,7 @@ function showPosition(position) {
 }
 
 const reload = function() {
-  var loc = $('#location-checkbox').prop('checked') ? 'near ' + location : '';
+  var loc = $('#location-checkbox').prop('checked') ? ' near ' + location : '';
   openai(`Bulleted list of 15 popular and diverse activities that people do over the weekend` + loc
 	 + (preferences ? ', with these preferences: ' + preferences : '')
 	 + `.`, render);
@@ -239,7 +244,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="relative">
 	<div id="overlay"><div className="cv-spinner"><span className="spinner"></span></div></div>
 
 	<div id="weekend" className="p-3 max-w-md bg-white
@@ -253,12 +258,17 @@ export default function Home() {
 
 	    <div id="location-box" className="pt-1" hidden>
 	      <input id="location-checkbox" type="checkbox" className="align-middle" />
-	      <div id="location" className="inline pl-1 text-blue-500 text-sm font-bold"></div>
+	      <label id="location" htmlFor="location-checkbox" className="inline pl-1 text-blue-500 text-sm font-bold"></label>
 	    </div>
 	  </div>
 	</div>
 
 	<div id="rest"></div>
+
+	<div id="toolbar-box relative">
+	<div id="toolbar" className="absolute top-[100px] left-0 bg-white overflow-hidden transition-all duration-200 ease-in-out shadow-[0_-10px_10px_0_rgba(0,0,0,0.2)]" />
+	</div>
+
 	<div id="drawer" className="fixed bottom-0 left-0 w-full h-0 bg-white overflow-hidden transition-all duration-200 ease-in-out shadow-[0_-10px_10px_0_rgba(0,0,0,0.2)]" />
       </main>
     </>

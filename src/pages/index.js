@@ -123,8 +123,8 @@ const render = (data) => {
       <br>E.g.,
   `);
 
-  var suggestions = ['active', 'indoor', 'with kids', 'civil rights', 'blm', 'rainy day', 'winery', 'art',
-  'meeting people', 'romantic'];
+  var suggestions = ['active', 'indoor', 'with kids', 'romantic', 'rainy day', 'winery', 'art', 'meeting people'];
+// XXX DISABLED   civil rights
   suggestions.forEach(s => {
     $box2.append(`<input type="button" class="pref-sugg px-1 border-0 border-gray-100 \
       underline decoration-dotted underline-offset-4 active:decoration-solid" value="` + s + `" />`);
@@ -187,20 +187,20 @@ const openai = (prompt, render) => {
     return;
   }
 
-  $("#overlay").fadeIn(300);
+  // XXX $("#overlay").fadeIn(300);
   const data = $.ajax({
     type: 'GET',
     url: '/api/openai',
     data: { prompt: prompt },
     success: function(data) {
-      $("#overlay").fadeOut(300);
+      // XXX $("#overlay").fadeOut(300);
       const out = data.choices[0].text;
       console.log(out);
       localStorage.setItem("openai:" + prompt, out);
       render(out);
     },
     error: function(xhr, textStatus, errorThrown) {
-      $("#overlay").fadeOut(300);
+      // XXX $("#overlay").fadeOut(300);
       console.log('Error fetching openAI completions: ' + textStatus + ': ' + errorThrown);
     }
   }).then(function(data) {

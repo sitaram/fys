@@ -87,6 +87,7 @@
 
 body {
   background-color: rgb(214, 219, 220);
+/* XXX DISABLED   background-color: white; */
 }
 
 a {
@@ -110,6 +111,7 @@ a {
   height: 100%;
   display: none;
   background: rgba(0,0,0,0.3);
+  pointer-events: none; /* Allow mouse events to pass through */
 }
 .cv-spinner {
   height: 100%;

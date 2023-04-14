@@ -12,7 +12,7 @@ if (typeof window !== 'undefined')
   import('slick-carousel');  // load dynamically if running on the client side
 
 var initialized = false;
-var location = 'Oakland, CA';  // default
+var location = 'San Carlos, California';  // default
 var preferences = '';
 
 function unsplash(container, queries) {
@@ -217,7 +217,7 @@ function showPosition(position) {
   fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
     .then(response => response.json())
     .then(data => {
-      let city = "Oakland", state = "CA";
+      let city = "San Carlos", state = "California";
       if (data.address.town) {
         city = data.address.town;
         state = data.address.state;

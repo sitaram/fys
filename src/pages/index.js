@@ -209,7 +209,7 @@ const openai = (prompt, render) => {
 };
 
 function showPosition(position) {
-  $("#location-box").hide();
+  // $("#location-box").hide();
 
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;

@@ -293,7 +293,7 @@ export default function Home() {
 	    <div className="text-l text-slate-500">What do you want to do..</div>
 	    <p className="text-xl text-black">this weekend?</p>
 
-	    <div id="location-box" className="pt-1" hidden>
+	    <div id="location-box" className="pt-1">
 	      <input id="location-checkbox" type="checkbox" className="align-middle" />
 	      <label id="location" htmlFor="location-checkbox" className="inline pl-1 text-blue-500 text-sm font-bold"></label>
 	    </div>

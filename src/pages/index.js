@@ -209,13 +209,44 @@ const openai = (prompt, render) => {
 };
 
 function showPosition(position) {
+  $("#location-box").hide();
+
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+    .then(response => response.json())
+    .then(data => {
+      let city = "Oakland", state = "CA";
+      if (data.address.town) {
+        city = data.address.town;
+        state = data.address.state;
+      } else if (data.address.city) {
+        city = data.address.city;
+        state = data.address.state;
+      } else {
+        city = data.address.village;
+        state = data.address.state;
+      }
+      location = city + ', ' + state;
+      $("#location").html(' near ' + location);
+      $("#location-box").show();
+    })
+    .catch(error => {
+      $("#location").html(`Geocoder failed due to: ${error}`);
+      $("#location-box").show();
+    });
+}
+
+function OLDshowPosition(position) {
   var latitude = position.coords.latitude;
   var longitude = position.coords.longitude;
   var accuracy = position.coords.accuracy;
   var url = "https://api.opencagedata.com/geocode/v1/json?q=" + latitude + "+" + longitude + "&key=b6640a4ba829450ea55332d76e588fdc&no_annotations=1";
   $.get(url, function(data) {
     var res = data.results[0].components;
-    location = res.city + ', ' + res.state_code || res.state;
+    if (res.city != 'undefined')
+      location = res.city + ', ' + res.state_code || res.state;
     $("#location").html(' near ' + location);
     $("#location-box").show();
   });

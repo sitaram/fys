@@ -265,6 +265,8 @@ export default function Home() {
 	if (initialized) return;
 	initialized = true;
 
+	$("#location").html(' near ' + location);
+	$("#location-box").show();
 	if (navigator.geolocation)
 	  navigator.geolocation.getCurrentPosition(showPosition);
 
@@ -293,7 +295,7 @@ export default function Home() {
 	    <div className="text-l text-slate-500">What do you want to do..</div>
 	    <p className="text-xl text-black">this weekend?</p>
 
-	    <div id="location-box" className="pt-1">
+	    <div id="location-box" className="pt-1" hidden>
 	      <input id="location-checkbox" type="checkbox" className="align-middle" />
 	      <label id="location" htmlFor="location-checkbox" className="inline pl-1 text-blue-500 text-sm font-bold"></label>
 	    </div>

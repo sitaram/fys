@@ -12,7 +12,7 @@ if (typeof window !== 'undefined')
   import('slick-carousel');  // load dynamically if running on the client side
 
 var initialized = false;
-var location = '';
+var location = 'Oakland, CA';  // default
 var preferences = '';
 
 function unsplash(container, queries) {
@@ -213,7 +213,6 @@ function showPosition(position) {
   var longitude = position.coords.longitude;
   var accuracy = position.coords.accuracy;
   var url = "https://api.opencagedata.com/geocode/v1/json?q=" + latitude + "+" + longitude + "&key=b6640a4ba829450ea55332d76e588fdc&no_annotations=1";
-  location = "Oakland, CA";  // default here if not found
   $.get(url, function(data) {
     var res = data.results[0].components;
     location = res.city + ', ' + res.state_code || res.state;
